@@ -48,17 +48,19 @@ then
 	DOMAIN="needish.local"
 	OLDNAME=$(cat /etc/sysconfig/network | grep  "HOSTNAME" | cut -d "=" -f2)
 	FQDN=$(echo $NAME"."$DOMAIN)
-	if [ $(echo $OLDNAME | cut -d "." -f1) == $NAME ];
+	OLDHOST=$(echo $OLDNAME | cut -d "." -f1)
+	if [ $OLDHOST == $NAME ];
 	then
 		exit 0
 	fi
 	#Replace string
 	sed -i "s/${OLDNAME}/${FQDN}/g" /etc/sysconfig/network
-	if [ -z $(cat /etc/hosts | grep "127.0.0.1 $NAME") ];
+	if [ -z $(cat /etc/hosts | grep "$OLDHOST") ];
 	then
-		sed -i "3i\127.0.0.1 $NAME" /etc/hosts
+		#sed -i "3i\127.0.0.1 ${NAME}" /etc/hosts
+		echo "127.0.0.1  $NAME"
 	else
-		sed -i "s/${OLDNAME}/${NAME}/g" /etc/hosts
+		sed -i "s/${OLDHOST}/${NAME}/g" /etc/hosts
 	fi
 fi
 
