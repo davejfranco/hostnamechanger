@@ -1,4 +1,4 @@
-# Hostname Changer script
+# <center>Hostname Changer script </center>
 
 This script will change Ec2 instance hostname based on Tag:Name 
 
@@ -9,3 +9,8 @@ Easy, just ask Dave... it will check its own instance Tag:Name and if different 
 
 This script will be on an s3 yet to define and from there packer or whoever will copy from there. 
 
+## Requirements
+* pip
+* awscli
+* jq
+ 
