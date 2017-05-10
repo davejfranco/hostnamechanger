@@ -2,7 +2,7 @@
 
 EC2ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq .region -r)
-TAGS=$({{ aws_install }} ec2 describe-instances --instance-ids $EC2ID --region $REGION | jq ."Reservations"[0]."Instances"[0]."Tags")
+TAGS=$(/usr/bin/aws ec2 describe-instances --instance-ids $EC2ID --region $REGION | jq ."Reservations"[0]."Instances"[0]."Tags")
 
 #Check response before doing anything
 if [[ ( -z $EC2ID ) || ( -z $REGION ) || ( -z $TAGS ) ]];
