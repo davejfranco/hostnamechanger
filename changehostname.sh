@@ -1,8 +1,9 @@
 #!/bin/bash
 
+#There is DOMAIN variable right now is set to "example.local"
 EC2ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq .region -r)
-TAGS=$(/opt/qoopit/ops/venv/bin/aws ec2 describe-instances --instance-ids $EC2ID --region $REGION | jq ."Reservations"[0]."Instances"[0]."Tags")
+TAGS=$(aws ec2 describe-instances --instance-ids $EC2ID --region $REGION | jq ."Reservations"[0]."Instances"[0]."Tags")
 
 #Check response before doing anything
 if [[ ( -z $EC2ID ) || ( -z $REGION ) || ( -z $TAGS ) ]];
@@ -45,7 +46,7 @@ fi
 if [ ! -z $(cat /etc/issue | grep -o "Amazon") ];
 then
 
-	DOMAIN="needish.local"
+	DOMAIN="example.local"
 	OLDNAME=$(cat /etc/sysconfig/network | grep  "HOSTNAME" | cut -d "=" -f2)
 	FQDN=$(echo $NAME"."$DOMAIN)
 	OLDHOST=$(echo $OLDNAME | cut -d "." -f1)
